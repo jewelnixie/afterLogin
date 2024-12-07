@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visita Pinas - Book Your Package</title>
+    <link rel="stylesheet" href="book.css">
+</head>
+<body>
+    <!-- header -->
+    <div class="contact-image">
+        <img src="bookPic.png" class="img-fluid" alt="Responsive image">
+    </div>
+
+    <div class="container">
+        <form class="booking-form">
+            <!-- Personal Information -->
+            <section class="section">
+                <h2>Personal Information</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">First Name</label>
+                        <input type="text" id="firstName" name="firstName" placeholder="Enter first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="middleName">Middle Name</label>
+                        <input type="text" id="middleName" name="middleName" placeholder="Enter middle name">
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" id="lastName" name="lastName" placeholder="Enter last name" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" placeholder="example@gmail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contactNumber">Contact Number</label>
+                        <input type="tel" id="contactNumber" name="contactNumber" placeholder="09xxxxxxxxx" required>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <!-- Travel Details -->
+            <section class="section">
+                <h2>Travel Details</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="packageType">Package Type</label>
+                        <select id="packageType" name="packageType" required>
+                            <option value="">Select your package</option>
+                            <option value="tour1">1 adult - 0 children - 1 room</option>
+                            <option value="tour2">2 adults - 1 child - 1 room</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="arrivalDateTime">Arrival Date & Time</label>
+                        <div class="datetime">
+                            <input type="date" id="arrivalDate" name="arrivalDate" required>
+                            <input type="time" id="arrivalTime" name="arrivalTime" required>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="departureDate">Departure Date</label>
+                        <input type="date" id="departureDate" name="departureDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="departureTime">Departure Time</label>
+                        <input type="time" id="departureTime" name="departureTime" required>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <!-- Travel Preferences -->
+            <section class="section">
+                <h2>Travel Preferences</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="classOfService">Class of Service</label>
+                        <select id="classOfService" name="classOfService" required>
+                            <option value="">Select Class of Service</option>
+                            <option value="economy">Economy</option>
+                            <option value="business">Business</option>
+                            <option value="firstClass">First Class</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="accommodationType">Accommodation Type</label>
+                        <select id="accommodationType" name="accommodationType" required>
+                            <option value="">Select Accommodation</option>
+                            <option value="single">Single</option>
+                            <option value="double">Double</option>
+                            <option value="suite">Suite</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="accessibilityNeeds">Accessibility Needs</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="accessibilityNeeds" value="yes" required> Yes (e.g., wheelchair assistance)</label>
+                            <label><input type="radio" name="accessibilityNeeds" value="no" required> No</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="petFriendly">Pet Friendly Accommodations</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="petFriendly" value="yes" required> Yes</label>
+                            <label><input type="radio" name="petFriendly" value="no" required> No</label>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <br>
+            <!-- Special Request -->
+            <section class="section">
+                <h2>Special Request</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="specialRequest">Special Request</label>
+                        <textarea id="specialRequest" name="specialRequest" placeholder="Type your message here"></textarea>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Number of Adults and Children -->
+            <section class="section">
+                <h2>Number of People</h2>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="numAdults">Number of Adults</label>
+                        <div class="increment">
+                            <button type="button" id="decrementAdults">-</button>
+                            <input type="number" id="numAdults" name="numAdults" value="1" min="1" required>
+                            <button type="button" id="incrementAdults">+</button>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="numChildren">Number of Children</label>
+                        <div class="increment">
+                            <button type="button" id="decrementChildren">-</button>
+                            <input type="number" id="numChildren" name="numChildren" value="0" min="0" required>
+                            <button type="button" id="incrementChildren">+</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <button type="submit" class="btn">Book</button>
+        </form>
+    </div>
+
+    <script>
+        // Increment and Decrement functionality for number of adults
+        const incrementAdultsButton = document.getElementById('incrementAdults');
+        const decrementAdultsButton = document.getElementById('decrementAdults');
+        const numAdultsInput = document.getElementById('numAdults');
+
+        incrementAdultsButton.addEventListener('click', () => {
+            numAdultsInput.value = parseInt(numAdultsInput.value) + 1;
+        });
+
+        decrementAdultsButton.addEventListener('click', () => {
+            if (numAdultsInput.value > 1) {
+                numAdultsInput.value = parseInt(numAdultsInput.value) - 1;
+            }
+        });
+
+        // Increment and Decrement functionality for number of children
+        const incrementChildrenButton = document.getElementById('incrementChildren');
+        const decrementChildrenButton = document.getElementById('decrementChildren');
+        const numChildrenInput = document.getElementById('numChildren');
+
+        incrementChildrenButton.addEventListener('click', () => {
+            numChildrenInput.value = parseInt(numChildrenInput.value) + 1;
+        });
+
+        decrementChildrenButton.addEventListener('click', () => {
+            if (numChildrenInput.value > 0) {
+                numChildrenInput.value = parseInt(numChildrenInput.value) - 1;
+            }
+        });
+    </script>
+</body>
+</html>

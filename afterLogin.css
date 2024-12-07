@@ -1,0 +1,320 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body{
+    background-color: #F2F1ED;
+}
+
+/* Navigation Bar CCS */
+.navbar {
+    padding: 13px 35px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    background-color: #fff; 
+}
+
+.navbar-brand {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333333;
+    margin-left: 30px;
+}
+
+.navbar-nav .nav-link {
+    font-size: 18px;
+    font-weight: 500;
+    color: #333333;
+    margin-right: 45px;
+}
+
+.dropdown-menu {
+    border-radius: 0;
+    margin-top: 0;
+}
+
+.dropdown-menu a:hover {
+    background-color: #194817;
+    color: white;
+}
+
+.navbar-toggler-icon {
+    border-radius: 5px;
+}
+
+.btn-signin {
+    margin-left: 35px;
+    padding: 8px 17px;
+    color: white;
+    background-color: #194817;
+    border: none;
+    font-size: 16px;
+    border-radius: 10px;
+}
+
+.btn-signin:hover {
+    background-color: #0a1607;
+    color: #F2F1ED;
+}
+
+/* Start */
+.homepage-section {
+    display: flex;
+    height: 92vh; 
+}
+
+.left-side {
+    background-color: #194B19;
+    color: white;
+    flex: 1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.text-content{
+    padding: 50px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.text-content h1 {
+    margin-bottom: 10px;
+    font-size: 30px;
+}
+
+.welcome-text {
+    font-size: 65px;
+    margin-bottom: 15px;
+    font-weight: bold;
+    line-height: 110%;
+    
+}
+
+.explore-text {
+    font-size: 20px;
+}
+
+.right-side {
+    flex: 1; 
+    background-image: url('ja.jpg'); 
+    background-size: cover; 
+    background-position: center;
+    background-repeat: no-repeat; 
+
+}
+
+.book-now-btn {
+    display: inline-block;
+    background-color: #ffffff; 
+    color: #194B19; 
+    padding: 7px 20px;
+    text-decoration: none;
+    font-size: 1.2rem;
+    margin-top: 20px; 
+    border: 1px solid white;
+    transition: background-color 0.3s ease;
+    font-family: 'Times New Roman';
+}
+
+.book-now-btn:hover {
+    background-color:transparent;
+    border-color: 1px solid white;
+    color: white;
+}
+
+
+/* Responsive design for tablets and smaller screens */
+@media (max-width: 768px) {
+    .homepage-section {
+        flex-direction: column; 
+    }
+
+    .left-side, .right-side {
+        flex: none;
+        width: 100%; 
+        height: 50vh; 
+    }
+
+    .text-content h1 {
+        font-size: 2.5rem; 
+    }
+
+    .welcome-text {
+        font-size: 1.5rem; 
+    }
+
+    .explore-text {
+        font-size: 1rem; 
+    }
+}
+
+/* Responsive design for mobile devices */
+@media (max-width: 480px) {
+    .text-content h1 {
+        font-size: 2rem; 
+    }
+
+    .welcome-text {
+        font-size: 1.2rem;
+    }
+
+    .explore-text {
+        font-size: 0.9rem;
+    }
+
+    .left-side, .right-side {
+        height: auto; 
+        padding: 20px; 
+    }
+}
+
+/* Promo CSS */
+.promo-section {
+    margin-top: 100px;
+    text-align: center;
+    padding: 20px;
+}
+
+.promo-section h1 {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+.promo-section p {
+    color: #555;
+    margin-bottom: 30px;
+}
+
+.promo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.promo-card {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    text-align: left;
+}
+
+.promo-card img {
+    width: 100%;
+    height: auto;
+}
+
+.promo-card h2 {
+    margin: 15px;
+    font-size: 1.25rem;
+}
+
+.promo-card p {
+    margin: 15px;
+    color: #666;
+}
+
+.promo-card button {
+    margin: 15px;
+    padding: 10px 20px;
+    background: #0a1607;
+    color: #fff;
+    border: 1px solid black;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.promo-card button:hover {
+    background: transparent;
+    border: 1px solid black;
+    color: black;
+}
+
+/* Large Card Styles */
+.promo-card.large {
+    grid-column: span 2;
+}
+
+.promo-card.large h2 {
+    font-size: 1.5rem;
+}
+
+.promo-card.large .buttons {
+    display: flex;
+    margin: 15px;
+}
+
+.promo-card.large button {
+    padding: 10px 20px; 
+    background: #0a1607;
+    border-radius: 5px; 
+    border: 1px solid black;
+}
+
+.promo-card.large button:hover {
+    background: transparent;
+    border: 1px solid black;
+    color: black;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+.promo-section h1 {
+    font-size: 1.75rem;
+}
+
+.promo-card.large {
+    grid-column: span 1; 
+}
+}
+
+@media (max-width: 480px) {
+.promo-section h1 {
+    font-size: 1.5rem;
+}
+
+.promo-card h2 {
+    font-size: 1rem;
+}
+
+.promo-card p {
+    font-size: 0.875rem;
+}
+
+.promo-card button {
+    font-size: 0.875rem;
+    padding: 8px 15px;
+}
+}
+
+/* Favorites */
+.user-dashboard {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Favorites Section */
+.carousel-item {
+    transition: transform 0.5s ease-in-out;
+}
+.card {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+.card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
