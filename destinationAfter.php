@@ -114,83 +114,48 @@
         <div class="row" style="margin-top: 30px;">
             <!-- Card Template -->
             <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+                $conn = new mysqli("localhost", "root", "iceicebabybaby99!", "visita_db");
 
-// Database connection
-$servername = "localhost";
-$username = "root";
-$password = "iceicebabybaby99!";
-$dbname = "visita_db";
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
-// Fetch favorites for user (assuming user ID 1)
-$sql = "SELECT d.id, d.name, d.image, d.description, d.price, d.duration 
-        FROM favorites f
-        JOIN destinations d ON f.destination_id = d.id
-        WHERE f.user_id = 1";
-$result = $conn->query($sql);
-
-if ($result) {
-    echo "Rows fetched: " . $result->num_rows . "<br>";
-} else {
-    echo "Query failed: " . $conn->error . "<br>";
-}
-
-?>
-
-<!-- FAVORITES FROM DESTINATION -->
-<section class="container my-5">
-    <h2 class="text-center mb-4">Your Favorites</h2>
-    <div id="favorites-carousel" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner" id="favorites-list">
-            <?php
-            if ($result && $result->num_rows > 0) {
-                $activeClass = 'active';
-                while ($row = $result->fetch_assoc()) {
-                    echo '<div class="carousel-item ' . $activeClass . '">';
-                    echo '<div class="d-flex justify-content-center">';
-                    echo '<div class="card" style="width: 18rem;">';
-                    echo '<img src="images/' . htmlspecialchars($row['image']) . '" class="card-img-top" alt="' . htmlspecialchars($row['name']) . '">';
-                    echo '<div class="card-body">';
-                    echo '<h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>';
-                    echo '<p class="card-text">' . htmlspecialchars(substr($row['description'], 0, 100)) . '...</p>';
-                    echo '<div class="d-flex justify-content-between">';
-                    echo '<span class="text-success fw-bold">$' . number_format($row['price'], 2) . '</span>';
-                    echo '<span class="text-muted">' . htmlspecialchars($row['duration']) . '</span>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-                    echo '</div>';
-                    $activeClass = '';
+                if ($conn->connect_error) {
+                    die("Connection failed: " . $conn->connect_error);
                 }
-            } else {
-                echo '<div class="carousel-item active">';
-                echo '<div class="text-center">No favorites found</div>';
-                echo '</div>';
-            }
-            $conn->close();
-            ?>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#favorites-carousel" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#favorites-carousel" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-</section>
 
+                $sql = "SELECT * FROM destinations";
+                $result = $conn->query($sql);
+
+                if ($result->num_rows > 0) {
+                    while ($row = $result->fetch_assoc()) {
+                        echo '
+                        <div class="col-md-4 py-3 py-md-0">
+                            <div class="card">
+                                <div class="heart-icon" data-id="' . $row['id'] . '">
+                                    <i class="fa-regular fa-heart"></i>
+                                </div>
+                                <img src="' . $row['image'] . '" alt="' . $row['name'] . '">
+                                <div class="card-body">
+                                    <div class="card-header">
+                                        <h3>' . $row['name'] . '</h3>
+                                        <h6><strong>$' . $row['price'] . '</strong>/' . $row['duration'] . '</h6>
+                                    </div>
+                                    <p class="text-muted">' . $row['description'] . '</p>
+                                    <div class="star">
+                                        <i class="fa-solid fa-star checked"></i>
+                                        <i class="fa-solid fa-star checked"></i>
+                                        <i class="fa-solid fa-star checked"></i>
+                                        <i class="fa-solid fa-star checked"></i>
+                                        <i class="fa-solid fa-star checked"></i>
+                                    </div>
+                                    <a href="#book"><span>Book Now</span></a>
+                                </div>
+                            </div>
+                        </div>';
+                    }
+                } else {
+                    echo "<p>No destinations available.</p>";
+                }
+
+                $conn->close();
+                ?>
 
     </div>
 </section>
