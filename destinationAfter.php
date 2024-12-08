@@ -145,7 +145,7 @@
                                         <i class="fa-solid fa-star checked"></i>
                                         <i class="fa-solid fa-star checked"></i>
                                     </div>
-                                    <a href="#book"><span>Book Now</span></a>
+                                    <a href="book_tab.html?packageId=' . $row['id'] . '"><span>Book Now</span></a>
                                 </div>
                             </div>
                         </div>';

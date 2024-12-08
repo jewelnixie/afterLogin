@@ -13,7 +13,7 @@
     </div>
 
     <div class="container">
-        <form class="booking-form">
+        <form id="bookingForm" class="booking-form">
             <!-- Personal Information -->
             <section class="section">
                 <h2>Personal Information</h2>
@@ -51,8 +51,7 @@
                         <label for="packageType">Package Type</label>
                         <select id="packageType" name="packageType" required>
                             <option value="">Select your package</option>
-                            <option value="tour1">1 adult - 0 children - 1 room</option>
-                            <option value="tour2">2 adults - 1 child - 1 room</option>
+                            <option></option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -154,7 +153,49 @@
         </form>
     </div>
 
+
     <script>
+        // Destinations data (simulating database data)
+        const destinations = [
+            { id: 1, name: 'Boracay', price: 400.00, duration: '3 days' },
+            { id: 2, name: 'Puerto Princesa', price: 200.00, duration: '2 days' },
+            { id: 3, name: 'Coron', price: 150.00, duration: '2 days' },
+            { id: 4, name: 'El Nido', price: 260.00, duration: '3 days' },
+            { id: 5, name: 'Chocolate Hills', price: 90.00, duration: '2 days' },
+            { id: 6, name: 'Baguio', price: 200.00, duration: '4 days' }
+        ];
+
+        // Function to populate package dropdown
+        function populatePackages() {
+            const packageSelect = document.getElementById('packageType');
+            
+            // Clear existing options (except the first one)
+            while (packageSelect.options.length > 1) {
+                packageSelect.remove(1);
+            }
+
+            // Add destinations as options
+            destinations.forEach(dest => {
+                const option = new Option(
+                    `${dest.name} - $${dest.price} / ${dest.duration}`, 
+                    dest.id
+                );
+                packageSelect.add(option);
+            });
+        }
+
+        // Function to pre-select package if coming from destinations page
+        function preselectPackage() {
+            // Check if there's a package ID in the URL
+            const urlParams = new URLSearchParams(window.location.search);
+            const packageId = urlParams.get('packageId');
+
+            if (packageId) {
+                const packageSelect = document.getElementById('packageType');
+                packageSelect.value = packageId;
+            }
+        }
+
         // Increment and Decrement functionality for number of adults
         const incrementAdultsButton = document.getElementById('incrementAdults');
         const decrementAdultsButton = document.getElementById('decrementAdults');
@@ -184,6 +225,14 @@
                 numChildrenInput.value = parseInt(numChildrenInput.value) - 1;
             }
         });
+
+        // Populate packages when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            populatePackages();
+            preselectPackage();
+        });
+
+        
     </script>
 </body>
 </html>
