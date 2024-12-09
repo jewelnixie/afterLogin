@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>VisitaPinas.</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="destinationAfter.css">
+    
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
     
@@ -19,6 +19,8 @@
     <!--Text Effects-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css"/>
+
+    <link rel="stylesheet" href="destinationAfter.css">
     <!--Text Effects-->
 
 </head>
@@ -128,7 +130,7 @@
                         echo '
                         <div class="col-md-4 py-3 py-md-0">
                             <div class="card">
-                                <div class="heart-icon" data-id="' . $row['id'] . '">
+                                <div class="heart-icon" data-id="'.$row['id'] .'">
                                     <i class="fa-regular fa-heart"></i>
                                 </div>
                                 <img src="' . $row['image'] . '" alt="' . $row['name'] . '">
@@ -415,14 +417,12 @@
     <!--Script for Footer End-->
 
     <script>
-document.addEventListener('DOMContentLoaded', function () {
-    // Check if user is logged in (you might want to pass this from PHP)
+    document.addEventListener('DOMContentLoaded', function () {
     const isLoggedIn = <?php echo isset($_SESSION['user_id']) ? 'true' : 'false'; ?>;
 
     document.querySelectorAll('.heart-icon').forEach(icon => {
         const heart = icon.querySelector('i');
 
-        // Only add click listener if user is logged in
         if (isLoggedIn) {
             icon.addEventListener('click', function () {
                 const destinationId = this.getAttribute('data-id');
@@ -432,64 +432,34 @@ document.addEventListener('DOMContentLoaded', function () {
                 heart.classList.toggle('fa-solid', !isFavorited);
                 heart.classList.toggle('fa-regular', isFavorited);
 
-                // Add animation effect only when favorited
-                if (!isFavorited) {
-                    const iconRect = this.getBoundingClientRect();
-                    const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
-                    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-                    for (let i = 0; i < 10; i++) {
-                        const heartEffect = document.createElement('i');
-                        heartEffect.classList.add('fa', 'fa-heart', 'heart-spam');
-                        document.body.appendChild(heartEffect);
-
-                        const x = iconRect.left + iconRect.width / 2 + scrollLeft;
-                        const y = iconRect.top - 10 + scrollTop;
-                        heartEffect.style.left = `${x}px`;
-                        heartEffect.style.top = `${y}px`;
-
-                        setTimeout(() => heartEffect.remove(), 1000);
-                    }
-                }
-
-                // Send favorite/unfavorite request to server
-                fetch('favorites.php', {
+                // Send AJAX request to add/remove favorite
+                fetch('add_to_favorites.php', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({
-                        destination_id: destinationId,
-                        action: isFavorited ? 'remove' : 'add',
+                    body: JSON.stringify({ 
+                        user_id: <?php echo $_SESSION['user_id']; ?>, 
+                        destination_id: destinationId 
                     }),
-                })
-                .then(response => response.json())
+                }).then(response => response.json())
                 .then(data => {
                     if (!data.success) {
-                        // Revert state if the server operation fails
+                        // Roll back UI update if error occurred
                         heart.classList.toggle('fa-solid', isFavorited);
                         heart.classList.toggle('fa-regular', !isFavorited);
-                        alert(data.message || 'Failed to update favorite.');
+                        alert(data.message);
                     }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    // Revert state if an error occurs
-                    heart.classList.toggle('fa-solid', isFavorited);
-                    heart.classList.toggle('fa-regular', !isFavorited);
-                    alert('Failed to update favorite. Please try again.');
-                });
-            });
-        } else {
-            // If not logged in, add a click event to prompt login
-            icon.addEventListener('click', function() {
-                alert('Please log in to add favorites.');
+                }).catch(error => console.error('Error:', error));
             });
         }
     });
 });
+
+
 </script>
     
+ 
 
     
 </body>

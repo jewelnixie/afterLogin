@@ -1,8 +1,9 @@
+<?php
+session_start();
+?>
+
 <!DOCTYPE html>
 <html>
-    <?php
-        session_start();
-    ?>
     <head>
         
         <title>Visita Pinas</title>
@@ -512,123 +513,69 @@
         <br>
         <br>
 
-        <!-- FAVORITES FROM DESTINATION -->
-        <section class="container my-5">
-            <h2 class="text-center mb-4">Your Favorites</h2>
-            <div id="favorites-carousel" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner" id="favorites-list">
-                    <?php
-                    // Database connection
-                    $servername = "localhost";
-                    $username = "root";
-                    $password = "iceicebabybaby99!";
-                    $dbname = "visita_db";
 
-                    // Create connection
-                    $conn = new mysqli($servername, $username, $password, $dbname);
 
-                    // Check connection
-                    if ($conn->connect_error) {
-                        die("Connection failed: " . $conn->connect_error);
-                    }
 
-                    // Fetch favorites for user (assuming user ID 1)
-                    $sql = "SELECT d.id, d.name, d.image, d.description, d.price, d.duration 
-                            FROM favorites f
-                            JOIN destinations d ON f.destination_id = d.id
-                            WHERE f.user_id = 1";
-                    $result = $conn->query($sql);
+<!-- FAVORITES FROM DESTINATION --> 
+<section class="container my-5">     
+    <h2 class="text-center mb-4">Your Favorites</h2>     
+    <div id="favorites-carousel" class="carousel slide" data-bs-ride="carousel">         
+        <div class="carousel-inner" id="favorites-list">
+            <?php
+            
+            // Database connection
+            $conn = new mysqli("localhost", "root", "iceicebabybaby99!", "visita_db");
+            if ($conn->connect_error) {
+                die("Database connection failed: " . $conn->connect_error);
+            }
+            
+            $userId = $_SESSION['user_id'];
+            $sql = "SELECT d.id, d.name, d.image, d.description, d.price, d.duration 
+                    FROM favorites f
+                    JOIN destinations d ON f.destination_id = d.id
+                    WHERE f.user_id = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("i", $userId);
+            $stmt->execute();
+            $result = $stmt->get_result();
 
-                    if ($result->num_rows > 0) {
-                        $activeClass = 'active'; // Set the first item as active
-                        while ($row = $result->fetch_assoc()) {
-                            echo '<div class="carousel-item ' . $activeClass . '">';
-                            echo '<div class="d-flex justify-content-center">';
-                            echo '<div class="card" style="width: 18rem;">';
-                            echo '<img src="images/' . htmlspecialchars($row['image']) . '" class="card-img-top" alt="' . htmlspecialchars($row['name']) . '">
-        ';
-                            echo '<div class="card-body">';
-                            echo '<h5 class="card-title">' . htmlspecialchars($row['name']) . '</h5>';
-                            echo '<p class="card-text">' . htmlspecialchars(substr($row['description'], 0, 100)) . '...</p>';
-                            echo '<div class="d-flex justify-content-between">';
-                            echo '<span class="text-success fw-bold">$' . number_format($row['price'], 2) . '</span>';
-                            echo '<span class="text-muted">' . htmlspecialchars($row['duration']) . '</span>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
-                            echo '</div>';
-                            $activeClass = ''; // Unset active for subsequent items
-                        }
-                    } else {
-                        echo '<div class="carousel-item active">';
-                        echo '<div class="text-center">No favorites found</div>';
-                        echo '</div>';
-                    }
+            if ($result->num_rows > 0) {
+                $active = true; // To ensure the first item is marked as active
+                while ($row = $result->fetch_assoc()) {
+                    echo '
+                    <div class="carousel-item ' . ($active ? 'active' : '') . '">
+                        <img src="' . $row['image'] . '" class="d-block w-100" alt="' . $row['name'] . '">
+                        <div class="carousel-caption d-none d-md-block">
+                            <h5>' . $row['name'] . '</h5>
+                            <p>' . $row['description'] . '</p>
+                            <p><strong>$' . $row['price'] . '</strong> for ' . $row['duration'] . '</p>
+                        </div>
+                    </div>';
+                    $active = false; // Set subsequent items as inactive
+                }
+            } else {
+                echo '<div class="carousel-item active text-center" id="no-favorites">No favorites found</div>';
+            }
 
-                    $conn->close();
-                    ?>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#favorites-carousel" data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#favorites-carousel" data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-        </section>
+            $stmt->close();
+            $conn->close();
+            ?>
+        </div>         
+        <button class="carousel-control-prev" type="button" data-bs-target="#favorites-carousel" data-bs-slide="prev">             
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>             
+            <span class="visually-hidden">Previous</span>         
+        </button>         
+        <button class="carousel-control-next" type="button" data-bs-target="#favorites-carousel" data-bs-slide="next">             
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>             
+            <span class="visually-hidden">Next</span>         
+        </button>     
+    </div> 
+</section>
+
+
     
         <script src="https://cdnjs.cloudflare.com/ajax/libs/splide/3.6.9/splide.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-        <script>
-            // Initialize Splide Carousel
-            const splide = new Splide('#favorites-carousel', {
-                type   : 'loop',
-                perPage: 3,
-                gap    : '1rem',
-            });
-            splide.mount();
-    
-            // Fetch favorites and populate carousel
-            fetch('fetchFavorites.php')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.error) {
-                        alert(data.error);
-                        return;
-                    }
-    
-                    const favoritesList = document.getElementById('favorites-list');
-                    favoritesList.innerHTML = ''; // Clear existing content
-    
-                    data.forEach(item => {
-                        const listItem = document.createElement('li');
-                        listItem.className = 'splide__slide';
-    
-                        listItem.innerHTML = `
-                            <div class="card">
-                                <img src="${item.image}" alt="${item.name}">
-                                <div class="card-body">
-                                    <h3>${item.name}</h3>
-                                    <h6><strong>$${item.price.toFixed(2)}</strong>/${item.duration}</h6>
-                                    <p>${item.description}</p>
-                                    <a href="#book"><span>Book Now</span></a>
-                                </div>
-                            </div>
-                        `;
-    
-                        favoritesList.appendChild(listItem);
-                    });
-    
-                    // Refresh Splide with new slides
-                    splide.refresh();
-                })
-                .catch(error => {
-                    console.error('Error fetching favorites:', error);
-                });
-        </script>
 
         <!-- script src for top navigation -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
